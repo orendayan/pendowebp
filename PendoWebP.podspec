@@ -41,7 +41,7 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   # CRITICAL FIX: Change all internal includes from "src/..." to relative paths
   s.prepare_command = <<-CMD
     # Fix include paths: change "src/dsp/yuv.h" to "yuv.h" etc.
-    find src -name "*.c" -o -name "*.h" | while read file; do
+    find src -type f \\( -name "*.c" -o -name "*.h" \\) | while read file; do
       sed -i '' 's|#include "src/dsp/|#include "|g' "$file"
       sed -i '' 's|#include "src/dec/|#include "|g' "$file"
       sed -i '' 's|#include "src/enc/|#include "|g' "$file"
@@ -49,6 +49,7 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
       sed -i '' 's|#include "src/mux/|#include "|g' "$file"
       sed -i '' 's|#include "src/webp/|#include "../webp/|g' "$file"
     done
+    echo "PendoWebP: Includes fixed for relative paths"
   CMD
   
   # Use subspecs like official libwebp for proper header resolution
