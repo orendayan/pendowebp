@@ -30,11 +30,13 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   s.module_name = 'PendoWebP'
   s.requires_arc = false
   
-  # KEY FIX: Use USER_HEADER_SEARCH_PATHS like official libwebp
+  # CRITICAL: Match official libwebp exactly
   s.pod_target_xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/ ${PODS_TARGET_SRCROOT}/'
+    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/ ${PODS_TARGET_SRCROOT}/',
+    'USE_HEADERMAP' => 'YES'
   }
   
+  # This is CRITICAL for finding src/dsp/yuv.h from src/dsp/yuv_neon.c
   s.preserve_paths = 'src'
   
   # Use subspecs like official libwebp for proper header resolution
@@ -42,7 +44,6 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   
   # SharpYUV subspec
   s.subspec 'sharpyuv' do |ss|
-    ss.preserve_paths = ['src', 'sharpyuv']
     ss.source_files = 'sharpyuv/*.{h,c}'
     ss.public_header_files = 'sharpyuv/sharpyuv.h'
   end
