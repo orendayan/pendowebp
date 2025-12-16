@@ -38,18 +38,35 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   # This is CRITICAL for finding src/dsp/yuv.h from src/dsp/yuv_neon.c
   s.preserve_paths = 'src'
   
-  # CRITICAL FIX: Change all internal includes from "src/..." to relative paths
+  # CRITICAL FIX: Change all absolute "src/..." includes to relative paths for CocoaPods
   s.prepare_command = <<-CMD
-    # Fix include paths: change "src/dsp/yuv.h" to "yuv.h" etc.
-    find src -type f \\( -name "*.c" -o -name "*.h" \\) | while read file; do
-      sed -i '' 's|#include "src/dsp/|#include "|g' "$file"
-      sed -i '' 's|#include "src/dec/|#include "|g' "$file"
-      sed -i '' 's|#include "src/enc/|#include "|g' "$file"
-      sed -i '' 's|#include "src/utils/|#include "|g' "$file"
-      sed -i '' 's|#include "src/mux/|#include "|g' "$file"
-      sed -i '' 's|#include "src/webp/|#include "../webp/|g' "$file"
-    done
-    echo "PendoWebP: Includes fixed for relative paths"
+    echo "PendoWebP: Fixing include paths for CocoaPods compatibility..."
+    
+    # Fix all src/ subdirectory includes within src/ files (e.g., src/dsp/yuv.c includes src/dsp/yuv.h)
+    find src -type f \\( -name "*.c" -o -name "*.h" \\) -exec sed -i '' \\
+      -e 's|"src/dsp/|"|g' \\
+      -e 's|"src/dec/|"../dec/|g' \\
+      -e 's|"src/enc/|"../enc/|g' \\
+      -e 's|"src/utils/|"../utils/|g' \\
+      -e 's|"src/mux/|"../mux/|g' \\
+      -e 's|"src/demux/|"../demux/|g' \\
+      -e 's|"src/webp/|"../webp/|g' \\
+      {} \\;
+    
+    # Fix sharpyuv includes
+    find sharpyuv -type f \\( -name "*.c" -o -name "*.h" \\) -exec sed -i '' \\
+      -e 's|"sharpyuv/|"|g' \\
+      -e 's|"src/webp/|"../src/webp/|g' \\
+      -e 's|"src/dsp/cpu.c"|"../src/dsp/cpu.c"|g' \\
+      -e 's|"src/dsp/cpu.h"|"../src/dsp/cpu.h"|g' \\
+      {} \\;
+    
+    # Remove config.h includes (not needed for CocoaPods)
+    find . -type f \\( -name "*.c" -o -name "*.h" \\) -exec sed -i '' \\
+      -e 's|#include ".*config.h"|// Removed config.h for CocoaPods|g' \\
+      {} \\;
+    
+    echo "PendoWebP: Include paths fixed ✓"
   CMD
   
   # Use subspecs like official libwebp for proper header resolution
