@@ -38,6 +38,19 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   # This is CRITICAL for finding src/dsp/yuv.h from src/dsp/yuv_neon.c
   s.preserve_paths = 'src'
   
+  # CRITICAL FIX: Change all internal includes from "src/..." to relative paths
+  s.prepare_command = <<-CMD
+    # Fix include paths: change "src/dsp/yuv.h" to "yuv.h" etc.
+    find src -name "*.c" -o -name "*.h" | while read file; do
+      sed -i '' 's|#include "src/dsp/|#include "|g' "$file"
+      sed -i '' 's|#include "src/dec/|#include "|g' "$file"
+      sed -i '' 's|#include "src/enc/|#include "|g' "$file"
+      sed -i '' 's|#include "src/utils/|#include "|g' "$file"
+      sed -i '' 's|#include "src/mux/|#include "|g' "$file"
+      sed -i '' 's|#include "src/webp/|#include "../webp/|g' "$file"
+    done
+  CMD
+  
   # Use subspecs like official libwebp for proper header resolution
   s.default_subspecs = ['sharpyuv', 'webp', 'demux', 'mux']
   
