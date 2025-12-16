@@ -41,13 +41,7 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   
   # Source files - include all libwebp components
   s.source_files = [
-    'src/dec/**/*.{h,c}',       # Decoder
-    'src/demux/**/*.{h,c}',     # Demuxer
-    'src/dsp/**/*.{h,c}',       # DSP optimizations
-    'src/enc/**/*.{h,c}',       # Encoder
-    'src/mux/**/*.{h,c}',       # Muxer
-    'src/utils/**/*.{h,c}',     # Utilities
-    'src/webp/**/*.h',          # Public headers
+    'src/**/*.{h,c}',           # All source files
     'sharpyuv/**/*.{h,c}'       # SharpYUV
   ]
   
