@@ -1,6 +1,7 @@
 #
 # PendoWebP.podspec
 # Namespaced fork of Google's libwebp for internal Pendo projects
+# Based on official libwebp 1.3.2 podspec structure
 #
 
 Pod::Spec.new do |s|
@@ -12,84 +13,91 @@ Pod::Spec.new do |s|
 PendoWebP is a namespaced fork of Google's libwebp library (v1.3.2).
 All public symbols are prefixed with Pendo_ to prevent dependency conflicts.
 
-This allows Pendo plugins to use a stable version of libwebp while
-allowing apps to use any version of the official libwebp without conflicts.
-
-Renamed symbols:
-- WebPEncodeRGBA() → Pendo_WebPEncodeRGBA()
-- WebPFree() → Pendo_WebPFree()
-- All other public APIs similarly prefixed
-
 Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
                        DESC
   
-  s.homepage         = 'https://github.com/pendo-io/pendowebp'
+  s.homepage         = 'https://github.com/orendayan/pendowebp'
   s.license          = { :type => 'BSD', :file => 'LICENSE' }
   s.author           = { 'Pendo' => 'dev@pendo.io' }
-  
-  # Source location - UPDATE THIS to your repository
   s.source           = { 
-    :git => 'https://github.com/pendo-io/pendowebp.git', 
+    :git => 'https://github.com/orendayan/pendowebp.git', 
     :tag => "v#{s.version}" 
   }
   
   s.ios.deployment_target = '12.0'
   s.osx.deployment_target = '10.13'
   
-  # Preserve original module structure
   s.module_name = 'PendoWebP'
-  
-  # Source files - include all libwebp components
-  s.source_files = [
-    'src/**/*.{h,c}',           # All source files
-    'sharpyuv/**/*.{h,c}'       # SharpYUV
-  ]
-  
-  # Public headers (what users can import)
-  s.public_header_files = 'src/webp/*.h'
-  
-  # Private headers (internal use, still need to be accessible during compilation)
-  s.private_header_files = [
-    'src/dec/**/*.h',
-    'src/dsp/**/*.h',
-    'src/enc/**/*.h',
-    'src/mux/**/*.h',
-    'src/utils/**/*.h',
-    'sharpyuv/**/*.h'
-  ]
-  
-  # Compiler flags
-  s.compiler_flags = [
-    '-DWEBP_USE_THREAD',        # Enable threading
-    '-DHAVE_CONFIG_H'           # Use config
-  ]
-  
-  # System frameworks needed
-  s.frameworks = 'Foundation', 'CoreGraphics', 'Accelerate'
-  
-  # Build settings
-  s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP',
-    'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) WEBP_USE_THREAD=1',
-    'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-comma -Wno-unreachable-code',
-    'DEFINES_MODULE' => 'YES',
-    'USE_HEADERMAP' => 'YES'
-  }
-  
-  s.user_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/src'
-  }
-  
-  # Not ARC (C library)
   s.requires_arc = false
   
-  # Library settings
-  s.libraries = 'c++'
+  # KEY FIX: Use USER_HEADER_SEARCH_PATHS like official libwebp
+  s.pod_target_xcconfig = {
+    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/ ${PODS_TARGET_SRCROOT}/'
+  }
   
-  # Prepare command (optional optimizations)
-  s.prepare_command = <<-CMD
-    # Optional: Generate config.h if needed
-    # echo "Preparing PendoWebP..."
-  CMD
+  s.preserve_paths = 'src'
+  
+  # Use subspecs like official libwebp for proper header resolution
+  s.default_subspecs = ['sharpyuv', 'webp', 'demux', 'mux']
+  
+  # SharpYUV subspec
+  s.subspec 'sharpyuv' do |ss|
+    ss.preserve_paths = ['src', 'sharpyuv']
+    ss.source_files = 'sharpyuv/*.{h,c}'
+    ss.public_header_files = 'sharpyuv/sharpyuv.h'
+  end
+  
+  # Core WebP subspec
+  s.subspec 'webp' do |ss|
+    ss.dependency 'PendoWebP/sharpyuv'
+    
+    ss.source_files = [
+      'src/webp/decode.h',
+      'src/webp/encode.h',
+      'src/webp/types.h',
+      'src/webp/mux_types.h',
+      'src/webp/format_constants.h',
+      'src/utils/*.{h,c}',
+      'src/dsp/*.{h,c}',
+      'src/dec/*.{h,c}',
+      'src/enc/*.{h,c}'
+    ]
+    
+    ss.public_header_files = [
+      'src/webp/decode.h',
+      'src/webp/encode.h',
+      'src/webp/types.h',
+      'src/webp/mux_types.h',
+      'src/webp/format_constants.h'
+    ]
+  end
+  
+  # Demux subspec
+  s.subspec 'demux' do |ss|
+    ss.dependency 'PendoWebP/webp'
+    
+    ss.source_files = [
+      'src/demux/*.{h,c}',
+      'src/webp/demux.h'
+    ]
+    
+    ss.public_header_files = 'src/webp/demux.h'
+  end
+  
+  # Mux subspec
+  s.subspec 'mux' do |ss|
+    ss.dependency 'PendoWebP/demux'
+    
+    ss.source_files = [
+      'src/mux/*.{h,c}',
+      'src/webp/mux.h'
+    ]
+    
+    ss.public_header_files = 'src/webp/mux.h'
+  end
+  
+  # Compiler flags
+  s.compiler_flags = '-DWEBP_USE_THREAD'
+  s.frameworks = 'Foundation', 'CoreGraphics', 'Accelerate'
+  s.libraries = 'c++'
 end
-
