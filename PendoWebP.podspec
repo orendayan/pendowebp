@@ -46,13 +46,16 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   ]
   
   # Public headers (what users can import)
-  s.public_header_files = [
-    'src/webp/decode.h',
-    'src/webp/encode.h',
-    'src/webp/types.h',
-    'src/webp/mux.h',
-    'src/webp/mux_types.h',
-    'src/webp/demux.h'
+  s.public_header_files = 'src/webp/*.h'
+  
+  # Private headers (internal use, still need to be accessible during compilation)
+  s.private_header_files = [
+    'src/dec/**/*.h',
+    'src/dsp/**/*.h',
+    'src/enc/**/*.h',
+    'src/mux/**/*.h',
+    'src/utils/**/*.h',
+    'sharpyuv/**/*.h'
   ]
   
   # Compiler flags
@@ -66,10 +69,12 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   
   # Build settings
   s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/src ${PODS_TARGET_SRCROOT}/src',
+    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/src ${PODS_TARGET_SRCROOT}/src ${PODS_ROOT}/PendoWebP/sharpyuv',
     'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) WEBP_USE_THREAD=1',
-    'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-comma',
-    'DEFINES_MODULE' => 'YES'
+    'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-comma -Wno-unreachable-code',
+    'DEFINES_MODULE' => 'YES',
+    'USE_HEADERMAP' => 'NO',
+    'ALWAYS_SEARCH_USER_PATHS' => 'NO'
   }
   
   # Not ARC (C library)
