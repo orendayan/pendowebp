@@ -72,6 +72,12 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
       'src/webp/mux_types.h',
       'src/webp/format_constants.h'
     ]
+    
+    # Add header paths specifically for this subspec
+    ss.xcconfig = {
+      'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}',
+      'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}'
+    }
   end
   
   # Demux subspec
