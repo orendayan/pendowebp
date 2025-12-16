@@ -30,11 +30,9 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   s.module_name = 'PendoWebP'
   s.requires_arc = false
   
-  # CRITICAL: The files use #include "src/dsp/yuv.h" from the root
-  # So PODS_TARGET_SRCROOT should point to the root (Pods/PendoWebP/), not src/
+  # CRITICAL: Files use #include "src/dsp/yuv.h" so root must be Pods/PendoWebP/ (NOT Pods/PendoWebP/src/)
   s.pod_target_xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}/ ${PODS_ROOT}/PendoWebP/',
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}/ ${PODS_ROOT}/PendoWebP/',
+    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}',
     'USE_HEADERMAP' => 'YES'
   }
   
