@@ -69,12 +69,11 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   
   # Build settings
   s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP/src ${PODS_TARGET_SRCROOT}/src ${PODS_ROOT}/PendoWebP/sharpyuv',
+    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_ROOT}/PendoWebP ${PODS_ROOT}/PendoWebP/src ${PODS_ROOT}/PendoWebP/src/dec ${PODS_ROOT}/PendoWebP/src/dsp ${PODS_ROOT}/PendoWebP/src/enc ${PODS_ROOT}/PendoWebP/src/mux ${PODS_ROOT}/PendoWebP/src/utils ${PODS_ROOT}/PendoWebP/src/webp ${PODS_ROOT}/PendoWebP/sharpyuv',
     'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) WEBP_USE_THREAD=1',
     'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-comma -Wno-unreachable-code',
     'DEFINES_MODULE' => 'YES',
-    'USE_HEADERMAP' => 'NO',
-    'ALWAYS_SEARCH_USER_PATHS' => 'NO'
+    'USE_HEADERMAP' => 'YES'
   }
   
   # Not ARC (C library)
