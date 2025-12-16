@@ -54,7 +54,7 @@ WEBP_EXTERN int WebPGetInfo(const uint8_t* data, size_t data_size,
 // Decodes WebP images pointed to by 'data' and returns RGBA samples, along
 // with the dimensions in *width and *height. The ordering of samples in
 // memory is R, G, B, A, R, G, B, A... in scan order (endian-independent).
-// The returned pointer should be deleted calling WebPFree().
+// The returned pointer should be deleted calling Pendo_WebPFree().
 // Returns NULL in case of error.
 WEBP_EXTERN uint8_t* WebPDecodeRGBA(const uint8_t* data, size_t data_size,
                                     int* width, int* height);
@@ -80,7 +80,7 @@ WEBP_EXTERN uint8_t* WebPDecodeBGR(const uint8_t* data, size_t data_size,
 // Decode WebP images pointed to by 'data' to Y'UV format(*). The pointer
 // returned is the Y samples buffer. Upon return, *u and *v will point to
 // the U and V chroma data. These U and V buffers need NOT be passed to
-// WebPFree(), unlike the returned Y luma one. The dimension of the U and V
+// Pendo_WebPFree(), unlike the returned Y luma one. The dimension of the U and V
 // planes are both (*width + 1) / 2 and (*height + 1) / 2.
 // Upon return, the Y buffer has a stride returned as '*stride', while U and V
 // have a common stride returned as '*uv_stride'.

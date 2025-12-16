@@ -58,12 +58,12 @@ extern "C" {
 #endif
 
 // Allocates 'size' bytes of memory. Returns NULL upon error. Memory
-// must be deallocated by calling WebPFree(). This function is made available
+// must be deallocated by calling Pendo_WebPFree(). This function is made available
 // by the core 'libwebp' library.
 WEBP_EXTERN void* WebPMalloc(size_t size);
 
 // Releases memory returned by the WebPDecode*() functions (from decode.h).
-WEBP_EXTERN void WebPFree(void* ptr);
+WEBP_EXTERN void Pendo_WebPFree(void* ptr);
 
 #ifdef __cplusplus
 }    // extern "C"

@@ -225,7 +225,7 @@ void* WebPMalloc(size_t size) {
   return WebPSafeMalloc(1, size);
 }
 
-void WebPFree(void* ptr) {
+void Pendo_WebPFree(void* ptr) {
   WebPSafeFree(ptr);
 }
 

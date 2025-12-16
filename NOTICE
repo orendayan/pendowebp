@@ -1,0 +1,33 @@
+PendoWebP Notice
+================
+
+This software contains code derived from Google's libwebp project.
+
+Original libwebp:
+- Copyright (c) 2010, Google Inc.
+- Source: https://chromium.googlesource.com/webm/libwebp
+- License: BSD 3-Clause License (see COPYING file)
+
+PendoWebP Modifications:
+- Copyright (c) 2025, Pendo.io Inc.
+- Modifications: Symbol namespace prefixing, CocoaPods packaging
+- License: BSD 3-Clause License (see LICENSE file)
+
+All modifications are released under the same BSD license as the
+original libwebp project.
+
+See AUTHORS file for the complete list of contributors to the
+original libwebp project.
+
+Third-Party Acknowledgments
+============================
+
+This software uses the following open source components:
+
+1. libwebp (https://chromium.googlesource.com/webm/libwebp)
+   - License: BSD 3-Clause
+   - Copyright: Google Inc.
+   - Used for: WebP image encoding and decoding
+
+For the complete libwebp license, see the COPYING file.
+For the PendoWebP license, see the LICENSE file.

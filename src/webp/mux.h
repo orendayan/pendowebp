@@ -57,7 +57,7 @@ extern "C" {
   WebPMuxGetChunk(mux, "ICCP", &icc_profile);
   // ... (Consume icc_data).
   WebPMuxDelete(mux);
-  WebPFree(data);
+  Pendo_WebPFree(data);
 */
 
 // Note: forward declaring enumerations is not allowed in (strict) C and C++,
