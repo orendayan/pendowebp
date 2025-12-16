@@ -79,7 +79,11 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
       'src/webp/format_constants.h'
     ]
     
-    # Subspec inherits pod-level header paths
+    # Force correct header path at subspec level
+    ss.xcconfig = {
+      'HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}"',
+      'USER_HEADER_SEARCH_PATHS' => '"${PODS_TARGET_SRCROOT}"'
+    }
   end
   
   # Demux subspec
