@@ -30,10 +30,11 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
   s.module_name = 'PendoWebP'
   s.requires_arc = false
   
-  # CRITICAL: The files use #include "src/dsp/yuv.h" so we need the root in the path
+  # CRITICAL: The files use #include "src/dsp/yuv.h" from the root
+  # So PODS_TARGET_SRCROOT should point to the root (Pods/PendoWebP/), not src/
   s.pod_target_xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}',
-    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}',
+    'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}/ ${PODS_ROOT}/PendoWebP/',
+    'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}/ ${PODS_ROOT}/PendoWebP/',
     'USE_HEADERMAP' => 'YES'
   }
   
@@ -73,11 +74,7 @@ Based on: https://chromium.googlesource.com/webm/libwebp @ v1.3.2
       'src/webp/format_constants.h'
     ]
     
-    # Add header paths specifically for this subspec
-    ss.xcconfig = {
-      'HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}',
-      'USER_HEADER_SEARCH_PATHS' => '$(inherited) ${PODS_TARGET_SRCROOT}'
-    }
+    # Subspec inherits pod-level header paths
   end
   
   # Demux subspec
