@@ -12,7 +12,7 @@
 // Author: James Zern (jzern@google.com)
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
 #if defined(WEBP_HAVE_SDL)

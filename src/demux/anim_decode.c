@@ -11,15 +11,15 @@
 //
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
 #include <assert.h>
 #include <string.h>
 
-#include "src/utils/utils.h"
-#include "src/webp/decode.h"
-#include "src/webp/demux.h"
+#include "../utils/utils.h"
+#include "../webp/decode.h"
+#include "../webp/demux.h"
 
 #define NUM_CHANNELS 4
 

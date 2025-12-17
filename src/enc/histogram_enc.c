@@ -10,18 +10,18 @@
 // Author: Jyrki Alakuijala (jyrki@google.com)
 //
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
 #include <float.h>
 #include <math.h>
 
-#include "src/dsp/lossless.h"
-#include "src/dsp/lossless_common.h"
-#include "src/enc/backward_references_enc.h"
-#include "src/enc/histogram_enc.h"
-#include "src/enc/vp8i_enc.h"
-#include "src/utils/utils.h"
+#include "lossless.h"
+#include "lossless_common.h"
+#include "../enc/backward_references_enc.h"
+#include "../enc/histogram_enc.h"
+#include "../enc/vp8i_enc.h"
+#include "../utils/utils.h"
 
 #define MAX_BIT_COST FLT_MAX
 

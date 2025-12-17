@@ -12,8 +12,8 @@
 
 #include <string.h>
 
-#include "src/dsp/dsp.h"
-#include "src/webp/types.h"
+#include "dsp.h"
+#include "../webp/types.h"
 
 #if defined(WEBP_USE_NEON) && !defined(WEBP_ANDROID_NEON) && \
     !defined(WEBP_HAVE_NEON_RTCD)

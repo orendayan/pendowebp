@@ -12,10 +12,10 @@
 // Author: Skal (pascal.massimino@gmail.com)
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
-#include "src/webp/encode.h"
+#include "../webp/encode.h"
 
 //------------------------------------------------------------------------------
 // WebPConfig

@@ -17,10 +17,10 @@
 #include <stddef.h>
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
-#include "src/webp/types.h"
+#include "../webp/types.h"
 
 #if defined(__GNUC__)
 #define LOCAL_GCC_VERSION ((__GNUC__ << 8) | __GNUC_MINOR__)

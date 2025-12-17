@@ -16,14 +16,14 @@
 #define WEBP_UTILS_UTILS_H_
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
 #include <assert.h>
 #include <limits.h>
 
-#include "src/dsp/dsp.h"
-#include "src/webp/types.h"
+#include "dsp.h"
+#include "../webp/types.h"
 
 #ifdef __cplusplus
 extern "C" {

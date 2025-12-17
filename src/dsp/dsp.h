@@ -15,11 +15,11 @@
 #define WEBP_DSP_DSP_H_
 
 #ifdef HAVE_CONFIG_H
-#include "src/webp/config.h"
+// config.h removed for CocoaPods
 #endif
 
-#include "src/dsp/cpu.h"
-#include "src/webp/types.h"
+#include "cpu.h"
+#include "../webp/types.h"
 
 #ifdef __cplusplus
 extern "C" {
