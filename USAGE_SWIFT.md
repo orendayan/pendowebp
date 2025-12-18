@@ -76,7 +76,7 @@ class PendoWebPEncoder {
         var output: UnsafeMutablePointer<UInt8>?
         let qualityFactor = quality * 100.0
         
-        let size = Pendo_WebPEncodeRGBA(
+        let size = PNDWebPEncodeRGBA(
             pixelData.assumingMemoryBound(to: UInt8.self),
             Int32(width),
             Int32(height),
@@ -87,7 +87,7 @@ class PendoWebPEncoder {
         
         guard size > 0, let outputPointer = output else {
             if let ptr = output {
-                Pendo_WebPFree(ptr)
+                PNDWebPFree(ptr)
             }
             return nil
         }
@@ -96,7 +96,7 @@ class PendoWebPEncoder {
         let webpData = Data(bytes: outputPointer, count: Int(size))
         
         // Free C memory
-        Pendo_WebPFree(outputPointer)
+        PNDWebPFree(outputPointer)
         
         return webpData
     }
@@ -130,7 +130,7 @@ class PendoWebPEncoder {
         // Lossless encoding
         var output: UnsafeMutablePointer<UInt8>?
         
-        let size = Pendo_WebPEncodeLosslessRGBA(
+        let size = PNDWebPEncodeLosslessRGBA(
             pixelData.assumingMemoryBound(to: UInt8.self),
             Int32(width),
             Int32(height),
@@ -139,13 +139,13 @@ class PendoWebPEncoder {
         
         guard size > 0, let outputPointer = output else {
             if let ptr = output {
-                Pendo_WebPFree(ptr)
+                PNDWebPFree(ptr)
             }
             return nil
         }
         
         let webpData = Data(bytes: outputPointer, count: Int(size))
-        Pendo_WebPFree(outputPointer)
+        PNDWebPFree(outputPointer)
         
         return webpData
     }
@@ -158,7 +158,7 @@ class PendoWebPEncoder {
         let rgba = webpData.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> UnsafeMutablePointer<UInt8>? in
             guard let baseAddress = bytes.baseAddress else { return nil }
             
-            return Pendo_WebPDecodeRGBA(
+            return PNDWebPDecodeRGBA(
                 baseAddress.assumingMemoryBound(to: UInt8.self),
                 bytes.count,
                 &width,
@@ -167,7 +167,7 @@ class PendoWebPEncoder {
         }
         
         guard let rgba = rgba else { return nil }
-        defer { Pendo_WebPFree(rgba) }
+        defer { PNDWebPFree(rgba) }
         
         // Create CGImage from RGBA data
         let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -197,7 +197,7 @@ class PendoWebPEncoder {
         let success = webpData.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> Int32 in
             guard let baseAddress = bytes.baseAddress else { return 0 }
             
-            return Pendo_WebPGetInfo(
+            return PNDWebPGetInfo(
                 baseAddress.assumingMemoryBound(to: UInt8.self),
                 bytes.count,
                 &width,
@@ -886,11 +886,11 @@ class ImageCompressor {
 // Use UnsafeMutablePointer for output parameters
 
 var output: UnsafeMutablePointer<UInt8>?
-let size = Pendo_WebPEncodeRGBA(..., &output)
+let size = PNDWebPEncodeRGBA(..., &output)
 
 // Always check and free
 if let output = output {
-    defer { Pendo_WebPFree(output) }
+    defer { PNDWebPFree(output) }
     // Use output...
 }
 ```
@@ -901,10 +901,10 @@ if let output = output {
 // Use defer for automatic cleanup
 func encode() -> Data? {
     var output: UnsafeMutablePointer<UInt8>?
-    let size = Pendo_WebPEncodeRGBA(..., &output)
+    let size = PNDWebPEncodeRGBA(..., &output)
     
     guard size > 0, let output = output else { return nil }
-    defer { Pendo_WebPFree(output) }  // ← Always freed!
+    defer { PNDWebPFree(output) }  // ← Always freed!
     
     return Data(bytes: output, count: Int(size))
 }
@@ -950,7 +950,7 @@ let uiImage = UIImage(cgImage: cgImage)
 ```swift
 // Data to UnsafePointer (for decoding)
 let rgba = webpData.withUnsafeBytes { bytes in
-    Pendo_WebPDecodeRGBA(
+    PNDWebPDecodeRGBA(
         bytes.baseAddress?.assumingMemoryBound(to: UInt8.self),
         bytes.count,
         &width,
@@ -983,7 +983,7 @@ func encodeWebP(_ image: UIImage, quality: Float) throws -> Data {
         throw WebPError.encodingFailed
     }
     
-    defer { Pendo_WebPFree(output) }
+    defer { PNDWebPFree(output) }
     return Data(bytes: output, count: Int(size))
 }
 
@@ -1077,12 +1077,12 @@ class WebPEncoderTests: XCTestCase {
 All functions with `Pendo_` prefix - see [RENAMED_SYMBOLS.txt](RENAMED_SYMBOLS.txt) for complete list.
 
 **Most commonly used:**
-- `Pendo_WebPEncodeRGBA` - Encode RGBA to WebP
-- `Pendo_WebPEncodeLosslessRGBA` - Lossless encoding
-- `Pendo_WebPDecodeRGBA` - Decode WebP to RGBA
-- `Pendo_WebPGetInfo` - Get dimensions
-- `Pendo_WebPFree` - Free memory
-- `Pendo_WebPMalloc` - Allocate memory
+- `PNDWebPEncodeRGBA` - Encode RGBA to WebP
+- `PNDWebPEncodeLosslessRGBA` - Lossless encoding
+- `PNDWebPDecodeRGBA` - Decode WebP to RGBA
+- `PNDWebPGetInfo` - Get dimensions
+- `PNDWebPFree` - Free memory
+- `PNDWebPMalloc` - Allocate memory
 
 ## Resources
 
@@ -1094,4 +1094,5 @@ All functions with `Pendo_` prefix - see [RENAMED_SYMBOLS.txt](RENAMED_SYMBOLS.t
 ---
 
 **Remember:** All 107 functions have the `Pendo_` prefix to prevent conflicts! 🛡️
+
 

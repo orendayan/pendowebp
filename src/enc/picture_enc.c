@@ -277,11 +277,11 @@ size_t NAME(const uint8_t* in, int w, int h, int bps, float q,          \
   return Encode(in, w, h, bps, IMPORTER, q, 0, out);                    \
 }
 
-ENCODE_FUNC(Pendo_WebPEncodeRGB, WebPPictureImportRGB)
-ENCODE_FUNC(Pendo_WebPEncodeRGBA, WebPPictureImportRGBA)
+ENCODE_FUNC(PNDWebPEncodeRGB, WebPPictureImportRGB)
+ENCODE_FUNC(PNDWebPEncodeRGBA, WebPPictureImportRGBA)
 #if !defined(WEBP_REDUCE_CSP)
-ENCODE_FUNC(Pendo_WebPEncodeBGR, WebPPictureImportBGR)
-ENCODE_FUNC(Pendo_WebPEncodeBGRA, WebPPictureImportBGRA)
+ENCODE_FUNC(PNDWebPEncodeBGR, WebPPictureImportBGR)
+ENCODE_FUNC(PNDWebPEncodeBGRA, WebPPictureImportBGRA)
 #endif  // WEBP_REDUCE_CSP
 
 #undef ENCODE_FUNC
@@ -292,11 +292,11 @@ size_t NAME(const uint8_t* in, int w, int h, int bps, uint8_t** out) {       \
   return Encode(in, w, h, bps, IMPORTER, LOSSLESS_DEFAULT_QUALITY, 1, out);  \
 }
 
-LOSSLESS_ENCODE_FUNC(Pendo_WebPEncodeLosslessRGB, WebPPictureImportRGB)
-LOSSLESS_ENCODE_FUNC(Pendo_WebPEncodeLosslessRGBA, WebPPictureImportRGBA)
+LOSSLESS_ENCODE_FUNC(PNDWebPEncodeLosslessRGB, WebPPictureImportRGB)
+LOSSLESS_ENCODE_FUNC(PNDWebPEncodeLosslessRGBA, WebPPictureImportRGBA)
 #if !defined(WEBP_REDUCE_CSP)
-LOSSLESS_ENCODE_FUNC(Pendo_WebPEncodeLosslessBGR, WebPPictureImportBGR)
-LOSSLESS_ENCODE_FUNC(Pendo_WebPEncodeLosslessBGRA, WebPPictureImportBGRA)
+LOSSLESS_ENCODE_FUNC(PNDWebPEncodeLosslessBGR, WebPPictureImportBGR)
+LOSSLESS_ENCODE_FUNC(PNDWebPEncodeLosslessBGRA, WebPPictureImportBGRA)
 #endif  // WEBP_REDUCE_CSP
 
 #undef LOSSLESS_ENCODE_FUNC

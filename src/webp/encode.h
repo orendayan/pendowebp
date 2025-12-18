@@ -42,20 +42,20 @@ WEBP_EXTERN int WebPGetEncoderVersion(void);
 
 // Returns the size of the compressed data (pointed to by *output), or 0 if
 // an error occurred. The compressed data must be released by the caller
-// using the call 'Pendo_WebPFree(*output)'.
+// using the call 'PNDWebPFree(*output)'.
 // These functions compress using the lossy format, and the quality_factor
 // can go from 0 (smaller output, lower quality) to 100 (best quality,
 // larger output).
-WEBP_EXTERN size_t Pendo_WebPEncodeRGB(const uint8_t* rgb,
+WEBP_EXTERN size_t PNDWebPEncodeRGB(const uint8_t* rgb,
                                  int width, int height, int stride,
                                  float quality_factor, uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeBGR(const uint8_t* bgr,
+WEBP_EXTERN size_t PNDWebPEncodeBGR(const uint8_t* bgr,
                                  int width, int height, int stride,
                                  float quality_factor, uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeRGBA(const uint8_t* rgba,
+WEBP_EXTERN size_t PNDWebPEncodeRGBA(const uint8_t* rgba,
                                   int width, int height, int stride,
                                   float quality_factor, uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeBGRA(const uint8_t* bgra,
+WEBP_EXTERN size_t PNDWebPEncodeBGRA(const uint8_t* bgra,
                                   int width, int height, int stride,
                                   float quality_factor, uint8_t** output);
 
@@ -66,16 +66,16 @@ WEBP_EXTERN size_t Pendo_WebPEncodeBGRA(const uint8_t* bgra,
 // settings. For lossless this means 'exact' is disabled. RGB values in
 // transparent areas will be modified to improve compression. To avoid this,
 // use WebPEncode() and set WebPConfig::exact to 1.
-WEBP_EXTERN size_t Pendo_WebPEncodeLosslessRGB(const uint8_t* rgb,
+WEBP_EXTERN size_t PNDWebPEncodeLosslessRGB(const uint8_t* rgb,
                                          int width, int height, int stride,
                                          uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeLosslessBGR(const uint8_t* bgr,
+WEBP_EXTERN size_t PNDWebPEncodeLosslessBGR(const uint8_t* bgr,
                                          int width, int height, int stride,
                                          uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeLosslessRGBA(const uint8_t* rgba,
+WEBP_EXTERN size_t PNDWebPEncodeLosslessRGBA(const uint8_t* rgba,
                                           int width, int height, int stride,
                                           uint8_t** output);
-WEBP_EXTERN size_t Pendo_WebPEncodeLosslessBGRA(const uint8_t* bgra,
+WEBP_EXTERN size_t PNDWebPEncodeLosslessBGRA(const uint8_t* bgra,
                                           int width, int height, int stride,
                                           uint8_t** output);
 

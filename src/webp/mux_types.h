@@ -68,11 +68,11 @@ static WEBP_INLINE void WebPDataInit(WebPData* webp_data) {
   }
 }
 
-// Clears the contents of the 'webp_data' object by calling Pendo_WebPFree().
+// Clears the contents of the 'webp_data' object by calling PNDWebPFree().
 // Does not deallocate the object itself.
 static WEBP_INLINE void WebPDataClear(WebPData* webp_data) {
   if (webp_data != NULL) {
-    Pendo_WebPFree((void*)webp_data->bytes);
+    PNDWebPFree((void*)webp_data->bytes);
     WebPDataInit(webp_data);
   }
 }

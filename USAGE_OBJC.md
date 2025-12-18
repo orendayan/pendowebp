@@ -66,7 +66,7 @@ pod install
     
     // Encode with PendoWebP (note the Pendo_ prefix!)
     uint8_t *output = NULL;
-    size_t outputSize = Pendo_WebPEncodeRGBA(
+    size_t outputSize = PNDWebPEncodeRGBA(
         pixelData,
         (int)width,
         (int)height,
@@ -78,7 +78,7 @@ pod install
     CGContextRelease(context);
     
     if (outputSize == 0 || !output) {
-        if (output) Pendo_WebPFree(output);
+        if (output) PNDWebPFree(output);
         return nil;
     }
     
@@ -86,7 +86,7 @@ pod install
     NSData *webpData = [NSData dataWithBytes:output length:outputSize];
     
     // IMPORTANT: Free the memory!
-    Pendo_WebPFree(output);
+    PNDWebPFree(output);
     
     return webpData;
 }
@@ -104,7 +104,7 @@ pod install
     
     // Use lossless encoding (note Pendo_ prefix!)
     uint8_t *output = NULL;
-    size_t outputSize = Pendo_WebPEncodeLosslessRGBA(
+    size_t outputSize = PNDWebPEncodeLosslessRGBA(
         pixelData,
         (int)width,
         (int)height,
@@ -125,7 +125,7 @@ pod install
     
     // Configure encoding (note Pendo_ prefix!)
     WebPConfig config;
-    if (!Pendo_WebPConfigInit(&config)) {
+    if (!PNDWebPConfigInit(&config)) {
         return nil;
     }
     
@@ -136,13 +136,13 @@ pod install
     config.alpha_compression = 1;
     
     // Validate config
-    if (!Pendo_WebPValidateConfig(&config)) {
+    if (!PNDWebPValidateConfig(&config)) {
         return nil;
     }
     
     // Setup picture (note Pendo_ prefix!)
     WebPPicture picture;
-    if (!Pendo_WebPPictureInit(&picture)) {
+    if (!PNDWebPPictureInit(&picture)) {
         return nil;
     }
     
@@ -151,19 +151,19 @@ pod install
     picture.use_argb = 1;
     
     // Import RGBA data
-    if (!Pendo_WebPPictureImportRGBA(&picture, pixelData, (int)(width * 4))) {
-        Pendo_WebPPictureFree(&picture);
+    if (!PNDWebPPictureImportRGBA(&picture, pixelData, (int)(width * 4))) {
+        PNDWebPPictureFree(&picture);
         return nil;
     }
     
     // Setup writer
     WebPMemoryWriter writer;
-    Pendo_WebPMemoryWriterInit(&writer);
-    picture.writer = Pendo_WebPMemoryWrite;
+    PNDWebPMemoryWriterInit(&writer);
+    picture.writer = PNDWebPMemoryWrite;
     picture.custom_ptr = &writer;
     
     // Encode (note Pendo_ prefix!)
-    int success = Pendo_WebPEncode(&config, &picture);
+    int success = PNDWebPEncode(&config, &picture);
     
     NSData *result = nil;
     if (success) {
@@ -171,8 +171,8 @@ pod install
     }
     
     // Cleanup (note Pendo_ prefix!)
-    Pendo_WebPPictureFree(&picture);
-    Pendo_WebPMemoryWriterClear(&writer);
+    PNDWebPPictureFree(&picture);
+    PNDWebPMemoryWriterClear(&writer);
     
     return result;
 }
@@ -191,12 +191,12 @@ pod install
     
     int width, height;
     // Get image info (note Pendo_ prefix!)
-    if (!Pendo_WebPGetInfo(data, dataSize, &width, &height)) {
+    if (!PNDWebPGetInfo(data, dataSize, &width, &height)) {
         return nil;
     }
     
     // Decode to RGBA (note Pendo_ prefix!)
-    uint8_t *rgba = Pendo_WebPDecodeRGBA(data, dataSize, &width, &height);
+    uint8_t *rgba = PNDWebPDecodeRGBA(data, dataSize, &width, &height);
     if (!rgba) return nil;
     
     // Create CGImage
@@ -219,7 +219,7 @@ pod install
     CGContextRelease(context);
     
     // Free WebP memory (note Pendo_ prefix!)
-    Pendo_WebPFree(rgba);
+    PNDWebPFree(rgba);
     
     return image;
 }
@@ -238,9 +238,9 @@ WebPGetInfo(...)
 
 **PendoWebP (your fork):**
 ```objective-c
-Pendo_WebPEncodeRGBA(...)  // ← Pendo_ prefix!
-Pendo_WebPFree(...)        // ← Pendo_ prefix!
-Pendo_WebPGetInfo(...)     // ← Pendo_ prefix!
+PNDWebPEncodeRGBA(...)  // ← Pendo_ prefix!
+PNDWebPFree(...)        // ← Pendo_ prefix!
+PNDWebPGetInfo(...)     // ← Pendo_ prefix!
 ```
 
 **All 107 functions have the `Pendo_` prefix!**
@@ -251,7 +251,7 @@ This allows your app to use BOTH:
 
 ```objective-c
 // Your plugin using PendoWebP
-size_t size1 = Pendo_WebPEncodeRGBA(...);  // Your namespaced version
+size_t size1 = PNDWebPEncodeRGBA(...);  // Your namespaced version
 
 // App or other library using official libwebp
 size_t size2 = WebPEncodeRGBA(...);        // Official version
@@ -265,23 +265,23 @@ size_t size2 = WebPEncodeRGBA(...);        // Official version
 
 ```objective-c
 // RGBA format
-Pendo_WebPEncodeRGBA(const uint8_t* rgba, int width, int height, int stride, float quality, uint8_t** output)
+PNDWebPEncodeRGBA(const uint8_t* rgba, int width, int height, int stride, float quality, uint8_t** output)
 
 // RGB format (no alpha)
-Pendo_WebPEncodeRGB(const uint8_t* rgb, int width, int height, int stride, float quality, uint8_t** output)
+PNDWebPEncodeRGB(const uint8_t* rgb, int width, int height, int stride, float quality, uint8_t** output)
 
 // BGR format
-Pendo_WebPEncodeBGR(const uint8_t* bgr, int width, int height, int stride, float quality, uint8_t** output)
+PNDWebPEncodeBGR(const uint8_t* bgr, int width, int height, int stride, float quality, uint8_t** output)
 
 // BGRA format
-Pendo_WebPEncodeBGRA(const uint8_t* bgra, int width, int height, int stride, float quality, uint8_t** output)
+PNDWebPEncodeBGRA(const uint8_t* bgra, int width, int height, int stride, float quality, uint8_t** output)
 ```
 
 ### Lossless Encoding
 
 ```objective-c
-Pendo_WebPEncodeLosslessRGBA(const uint8_t* rgba, int width, int height, int stride, uint8_t** output)
-Pendo_WebPEncodeLosslessRGB(const uint8_t* rgb, int width, int height, int stride, uint8_t** output)
+PNDWebPEncodeLosslessRGBA(const uint8_t* rgba, int width, int height, int stride, uint8_t** output)
+PNDWebPEncodeLosslessRGB(const uint8_t* rgb, int width, int height, int stride, uint8_t** output)
 ```
 
 ## Memory Management
@@ -290,14 +290,14 @@ Pendo_WebPEncodeLosslessRGB(const uint8_t* rgb, int width, int height, int strid
 
 ```objective-c
 uint8_t *output = NULL;
-size_t size = Pendo_WebPEncodeRGBA(..., &output);
+size_t size = PNDWebPEncodeRGBA(..., &output);
 
 if (size > 0 && output) {
     // Use the data
     NSData *webpData = [NSData dataWithBytes:output length:size];
     
     // MUST FREE!
-    Pendo_WebPFree(output);  // ← Don't forget this!
+    PNDWebPFree(output);  // ← Don't forget this!
 }
 ```
 
@@ -340,7 +340,7 @@ if (size > 0 && output) {
     
     // Encode to WebP (note Pendo_ prefix!)
     uint8_t *output = NULL;
-    size_t outputSize = Pendo_WebPEncodeRGBA(
+    size_t outputSize = PNDWebPEncodeRGBA(
         pixelData,
         (int)width,
         (int)height,
@@ -352,13 +352,13 @@ if (size > 0 && output) {
     free(pixelData);
     
     if (outputSize == 0 || !output) {
-        if (output) Pendo_WebPFree(output);
+        if (output) PNDWebPFree(output);
         return NO;
     }
     
     // Save to file
     NSData *webpData = [NSData dataWithBytes:output length:outputSize];
-    Pendo_WebPFree(output);  // Free WebP memory
+    PNDWebPFree(output);  // Free WebP memory
     
     return [webpData writeToFile:path atomically:YES];
 }
@@ -371,17 +371,17 @@ if (size > 0 && output) {
 
 ```objective-c
 uint8_t *output = NULL;
-size_t size = Pendo_WebPEncodeRGBA(..., &output);
+size_t size = PNDWebPEncodeRGBA(..., &output);
 
 if (size == 0) {
     NSLog(@"WebP encoding failed!");
-    if (output) Pendo_WebPFree(output);  // Clean up if allocated
+    if (output) PNDWebPFree(output);  // Clean up if allocated
     return nil;
 }
 
 // Success - use the data
 NSData *webpData = [NSData dataWithBytes:output length:size];
-Pendo_WebPFree(output);
+PNDWebPFree(output);
 ```
 
 ## Performance Tips
@@ -425,10 +425,10 @@ for (UIImage *image in images) {
     uint8_t *pixelData = CGBitmapContextGetData(context);
     
     uint8_t *output = NULL;
-    size_t size = Pendo_WebPEncodeRGBA(..., &output);
+    size_t size = PNDWebPEncodeRGBA(..., &output);
     
     // Process output...
-    Pendo_WebPFree(output);
+    PNDWebPFree(output);
 }
 
 CGContextRelease(context);  // Release once at end
@@ -442,38 +442,38 @@ CGContextRelease(context);  // Release once at end
 // All return size_t (output size), 0 on failure
 // All have Pendo_ prefix!
 
-Pendo_WebPEncodeRGBA(rgba, width, height, stride, quality, &output)
-Pendo_WebPEncodeBGRA(bgra, width, height, stride, quality, &output)
-Pendo_WebPEncodeRGB(rgb, width, height, stride, quality, &output)
-Pendo_WebPEncodeBGR(bgr, width, height, stride, quality, &output)
+PNDWebPEncodeRGBA(rgba, width, height, stride, quality, &output)
+PNDWebPEncodeBGRA(bgra, width, height, stride, quality, &output)
+PNDWebPEncodeRGB(rgb, width, height, stride, quality, &output)
+PNDWebPEncodeBGR(bgr, width, height, stride, quality, &output)
 
 // Lossless variants
-Pendo_WebPEncodeLosslessRGBA(rgba, width, height, stride, &output)
-Pendo_WebPEncodeLosslessBGRA(bgra, width, height, stride, &output)
-Pendo_WebPEncodeLosslessRGB(rgb, width, height, stride, &output)
-Pendo_WebPEncodeLosslessBGR(bgr, width, height, stride, &output)
+PNDWebPEncodeLosslessRGBA(rgba, width, height, stride, &output)
+PNDWebPEncodeLosslessBGRA(bgra, width, height, stride, &output)
+PNDWebPEncodeLosslessRGB(rgb, width, height, stride, &output)
+PNDWebPEncodeLosslessBGR(bgr, width, height, stride, &output)
 ```
 
 ### Memory Management
 
 ```objective-c
 // Free memory allocated by WebP functions
-Pendo_WebPFree(void *ptr)
+PNDWebPFree(void *ptr)
 
 // Allocate memory (rarely needed)
-Pendo_WebPMalloc(size_t size)
+PNDWebPMalloc(size_t size)
 ```
 
 ### Decoding Functions
 
 ```objective-c
 // Simple decoding
-Pendo_WebPDecodeRGBA(data, data_size, &width, &height)
-Pendo_WebPDecodeARGB(data, data_size, &width, &height)
-Pendo_WebPDecodeBGRA(data, data_size, &width, &height)
+PNDWebPDecodeRGBA(data, data_size, &width, &height)
+PNDWebPDecodeARGB(data, data_size, &width, &height)
+PNDWebPDecodeBGRA(data, data_size, &width, &height)
 
 // Get image info without decoding
-Pendo_WebPGetInfo(data, data_size, &width, &height)
+PNDWebPGetInfo(data, data_size, &width, &height)
 ```
 
 ## Helper Class Example
@@ -523,7 +523,7 @@ Create a reusable WebP encoder class:
     
     // Encode (note Pendo_ prefix!)
     uint8_t *output = NULL;
-    size_t size = Pendo_WebPEncodeRGBA(
+    size_t size = PNDWebPEncodeRGBA(
         pixelData,
         (int)width,
         (int)height,
@@ -535,24 +535,24 @@ Create a reusable WebP encoder class:
     CGContextRelease(context);
     
     if (size == 0 || !output) {
-        if (output) Pendo_WebPFree(output);
+        if (output) PNDWebPFree(output);
         return nil;
     }
     
     NSData *webpData = [NSData dataWithBytes:output length:size];
-    Pendo_WebPFree(output);
+    PNDWebPFree(output);
     
     return webpData;
 }
 
 + (NSData *)encodeLossless:(UIImage *)image {
-    // Similar to above but use Pendo_WebPEncodeLosslessRGBA
+    // Similar to above but use PNDWebPEncodeLosslessRGBA
     // ...
 }
 
 + (UIImage *)decodeWebP:(NSData *)webpData {
     int width, height;
-    uint8_t *rgba = Pendo_WebPDecodeRGBA(
+    uint8_t *rgba = PNDWebPDecodeRGBA(
         webpData.bytes,
         webpData.length,
         &width,
@@ -575,7 +575,7 @@ Create a reusable WebP encoder class:
     
     CGImageRelease(cgImage);
     CGContextRelease(context);
-    Pendo_WebPFree(rgba);
+    PNDWebPFree(rgba);
     
     return image;
 }
@@ -605,16 +605,16 @@ UIImage *decodedImage = [PendoWebPHelper decodeWebP:webpData];
 ```objective-c
 // BAD - Memory leak!
 uint8_t *output = NULL;
-Pendo_WebPEncodeRGBA(..., &output);
+PNDWebPEncodeRGBA(..., &output);
 return [NSData dataWithBytes:output length:size];  // Leaked!
 ```
 
 ```objective-c
 // GOOD
 uint8_t *output = NULL;
-size_t size = Pendo_WebPEncodeRGBA(..., &output);
+size_t size = PNDWebPEncodeRGBA(..., &output);
 NSData *data = [NSData dataWithBytes:output length:size];
-Pendo_WebPFree(output);  // ✓ Freed!
+PNDWebPFree(output);  // ✓ Freed!
 return data;
 ```
 
@@ -625,17 +625,17 @@ return data;
 WebPEncodeRGBA(...);  // Missing Pendo_ prefix
 
 // GOOD
-Pendo_WebPEncodeRGBA(...);  // ✓ Correct!
+PNDWebPEncodeRGBA(...);  // ✓ Correct!
 ```
 
 ### ❌ Wrong Quality Range
 
 ```objective-c
 // BAD
-Pendo_WebPEncodeRGBA(..., 0.85f, ...);  // Wrong! API wants 0-100
+PNDWebPEncodeRGBA(..., 0.85f, ...);  // Wrong! API wants 0-100
 
 // GOOD
-Pendo_WebPEncodeRGBA(..., 85.0f, ...);  // Correct! 0-100 range
+PNDWebPEncodeRGBA(..., 85.0f, ...);  // Correct! 0-100 range
 ```
 
 ## See Also
@@ -654,4 +654,5 @@ For issues specific to PendoWebP (the fork):
 For libwebp API questions:
 - See official libwebp documentation
 - All APIs work the same, just add Pendo_ prefix
+
 

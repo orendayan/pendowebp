@@ -73,9 +73,9 @@ CocoaPods builds each pod in isolation, so these paths don't work. The hook conv
 #import <webp/encode.h>
 
 uint8_t *output;
-size_t size = Pendo_WebPEncodeRGBA(pixels, width, height, stride, quality, &output);
+size_t size = PNDWebPEncodeRGBA(pixels, width, height, stride, quality, &output);
 // Use WebP data...
-Pendo_WebPFree(output);
+PNDWebPFree(output);
 ```
 
 ## Verification
@@ -95,4 +95,5 @@ Make sure the post_install hook is in your Podfile and runs successfully.
 ### Hook doesn't run
 
 Check that the hook is inside the `post_install do |installer|` block and before the final `end`.
+
 

@@ -16,7 +16,7 @@ Allows Pendo plugins to use a stable version of libwebp while apps can use any o
 **Example:**
 ```objective-c
 // Your plugin using PendoWebP
-Pendo_WebPEncodeRGBA(...)  // ← Namespaced
+PNDWebPEncodeRGBA(...)  // ← Namespaced
 
 // App using official libwebp  
 WebPEncodeRGBA(...)        // ← Original
@@ -56,7 +56,7 @@ pod install
 #import <webp/encode.h>
 
 uint8_t *output = NULL;
-size_t size = Pendo_WebPEncodeRGBA(
+size_t size = PNDWebPEncodeRGBA(
     pixels, 
     width, 
     height, 
@@ -66,7 +66,7 @@ size_t size = Pendo_WebPEncodeRGBA(
 );
 
 NSData *webpData = [NSData dataWithBytes:output length:size];
-Pendo_WebPFree(output);  // Always free!
+PNDWebPFree(output);  // Always free!
 ```
 
 **Swift:**
@@ -103,9 +103,9 @@ All 107 public functions are prefixed:
 
 ```c
 // Original              // PendoWebP
-WebPEncodeRGBA()    →   Pendo_WebPEncodeRGBA()
-WebPFree()          →   Pendo_WebPFree()
-WebPGetInfo()       →   Pendo_WebPGetInfo()
+WebPEncodeRGBA()    →   PNDWebPEncodeRGBA()
+WebPFree()          →   PNDWebPFree()
+WebPGetInfo()       →   PNDWebPGetInfo()
 // ... etc
 ```
 
